@@ -1,8 +1,11 @@
 use std::{ env, str };
 pub mod listener;
 pub mod streamer;
+use dotenv::dotenv;
 
 fn main() {
+    dotenv().ok();
+    const HOST: &str = "HOST";
     let valid_modes: [&str; 2] = ["tcp-receiver", "tcp-emitter"];
     let mut tcp_mode: String;
     let args: Vec<String> = env::args().collect();
@@ -16,8 +19,14 @@ fn main() {
     }
 
     match mode {
-        "tcp-receiver" => listener::run_server(port),
-        "tcp-emitter" => streamer::transmit_data(port),
+        "tcp-receiver" => {
+            let host: &str = "0.0.0.0";
+            listener::run_server(host, port);
+        }
+        "tcp-emitter" => {
+            let host = env::var(HOST).unwrap();
+            streamer::transmit_data(&host, port);
+        },
         _ => panic!("Options do not match!"),
     }
 }

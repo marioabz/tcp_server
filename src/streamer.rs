@@ -3,11 +3,10 @@ use std::thread;
 use std::time::Duration;
 use std::io::Write;
 
-const LOCAL_IP: &str = "127.0.0.1";
 
-pub fn transmit_data(port: u16) {
+pub fn transmit_data(host: &str, port: u16) {
     let mut stream = TcpStream::connect(
-        format!("{}:{}", LOCAL_IP, port)
+        format!("{}:{}", host, port)
     ).unwrap();
 
     let mut my_bytes = [0u8; 100];

@@ -1,13 +1,12 @@
 use std::net::{ TcpListener, TcpStream };
-use std::thread;
+use std::{ thread, env};
 use std::time::Duration;
 use std::io::Read;
 
-const LOCAL_IP: &str = "127.0.0.1";
 
-pub fn run_server(port: u16) {
+pub fn run_server(host: &str, port: u16) {
     let listener = TcpListener::bind(
-        format!("{}:{}", LOCAL_IP, port)
+        format!("{}:{}", host, port)
     ).unwrap();
 
     let mut read_bytes = [0u8; 100];
